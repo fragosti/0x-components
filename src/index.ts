@@ -1,5 +1,3 @@
-import TokenBalanceInput from './components/TokenBalanceInput';
+import TokenBalanceInput from "./components/TokenBalanceInput";
 
-export {
-  TokenBalanceInput,
-};
+export { TokenBalanceInput };

@@ -1,6 +1,9 @@
 {
-  "extends": "tslint-config-airbnb",
+  "extends": [
+    "tslint-config-airbnb", 
+    "tslint-config-prettier"
+  ],
   "rules": {
-    "import-name": false,
+    "import-name": false
   }
 }

@@ -1,3 +1,3 @@
-import TokenBalanceInput from './TokenBalanceInput';
+import TokenBalanceInput from "./TokenBalanceInput";
 
 export default TokenBalanceInput;
