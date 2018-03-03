@@ -9,7 +9,14 @@
     "start": "styleguidist server --config styleguide.config.js",
     "build": "webpack",
     "lint": "tslint -c tslint.json 'src/**/*.ts*' --fix",
-    "test": "jest --coverage"
+    "test": "jest --coverage",
+    "precommit": "lint-staged"
+  },
+  "lint-staged": {
+    "*.ts*": [
+      "lint",
+      "git add"
+    ]
   },
   "devDependencies": {
     "@types/enzyme": "^3.1.9",
@@ -18,7 +25,9 @@
     "awesome-typescript-loader": "^3.5.0",
     "enzyme": "^3.3.0",
     "enzyme-adapter-react-16": "^1.1.1",
+    "husky": "^0.14.3",
     "jest": "^22.4.2",
+    "lint-staged": "^7.0.0",
     "react-docgen-typescript": "^1.2.4",
     "react-styleguidist": "^6.2.6",
     "ts-jest": "^22.4.1",
