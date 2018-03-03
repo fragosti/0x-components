@@ -3,11 +3,14 @@ import * as React from "react";
 import TextInput from "../TextInput";
 
 interface TokenBalanceInputProps {
-  message: string;
+  takerToken: string;
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-const TokenBalanceInput = ({ message }: TokenBalanceInputProps) => (
-  <TextInput />
-);
+class TokenBalanceInput extends React.Component<TokenBalanceInputProps> {
+  render() {
+    return <TextInput isLoading={true} />;
+  }
+}
 
 export default TokenBalanceInput;
