@@ -12,4 +12,5 @@ module.exports = {
   resolver: require('react-docgen').resolver.findAllComponentDefinitions,
   propsParser: require('react-docgen-typescript').withCustomConfig('./tsconfig.json').parse,
   webpackConfig: require('./webpack.config.js'),
+  skipComponentsWithoutExample: true,
 };

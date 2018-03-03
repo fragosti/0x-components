@@ -1,9 +1,13 @@
 import * as React from "react";
 
-interface AppProps {
+import TextInput from "../TextInput";
+
+interface TokenBalanceInputProps {
   message: string;
 }
 
-export default function({ message }: AppProps) {
-  return <h1>Hello {message}</h1>;
-}
+const TokenBalanceInput = ({ message }: TokenBalanceInputProps) => (
+  <TextInput />
+);
+
+export default TokenBalanceInput;

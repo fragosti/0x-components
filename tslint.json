@@ -1,9 +1,11 @@
 {
   "extends": [
     "tslint-config-airbnb", 
+    "tslint-react",
     "tslint-config-prettier"
   ],
   "rules": {
-    "import-name": false
+    "import-name": false,
+    "variable-name": [true, "allow-pascal-case"]
   }
 }
