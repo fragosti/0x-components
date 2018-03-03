@@ -6,8 +6,8 @@
   "author": "fragosti",
   "license": "MIT",
   "scripts": {
-    "start": "tsc && styleguidist server --config styleguide.config.js",
-    "build": "webpack-cli",
+    "start": "styleguidist server --config styleguide.config.js",
+    "build": "webpack",
     "lint": "tslint -c tslint.json 'src/**/*.ts*' --fix",
     "test": "jest --coverage"
   },
@@ -25,8 +25,7 @@
     "tslint": "^5.9.1",
     "tslint-config-airbnb": "^5.7.0",
     "typescript": "^2.7.2",
-    "webpack": "^4.0.1",
-    "webpack-cli": "^2.0.10"
+    "webpack": "^3.0.0"
   },
   "dependencies": {
     "@types/react": "^16.0.40",
