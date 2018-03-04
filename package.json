@@ -6,10 +6,11 @@
   "author": "fragosti",
   "license": "MIT",
   "scripts": {
-    "start": "styleguidist server --config styleguide.config.js",
-    "build": "webpack",
+    "start": "dotenv -e .env -- styleguidist server --config styleguide.config.js",
+    "build": "dotenv -e .env -- webpack",
     "lint": "tslint -c tslint.json 'src/**/*.{ts,tsx}' --fix",
     "test": "jest --coverage",
+    "test:watch": "jest --coverage --watch",
     "precommit": "lint-staged",
     "prettier": "prettier --parser typescript --write 'src/**/*.{ts,tsx}'"
   },
@@ -25,6 +26,7 @@
     "@types/enzyme-adapter-react-16": "^1.0.2",
     "@types/jest": "^22.1.4",
     "awesome-typescript-loader": "^3.5.0",
+    "dotenv-cli": "^1.4.0",
     "enzyme": "^3.3.0",
     "enzyme-adapter-react-16": "^1.1.1",
     "husky": "^0.14.3",

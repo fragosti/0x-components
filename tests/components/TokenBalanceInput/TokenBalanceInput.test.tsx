@@ -5,8 +5,8 @@ import { TokenBalanceInput } from "../../../src";
 
 Enzyme.configure({ adapter: new Adapter() });
 
-// describe('<TokenBalanceInput />', () => {
-//   it('shallow renders without crashing', () => {
-//     shallow(<TokenBalanceInput />);
-//   });
-// });
+describe("<TokenBalanceInput />", () => {
+  it("shallow renders without crashing", () => {
+    shallow(<TokenBalanceInput takerTokenAddress="fakeaddress" />);
+  });
+});
