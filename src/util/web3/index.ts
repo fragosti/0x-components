@@ -9,22 +9,13 @@ const web3 = new Web3(provider);
 const web3Wrapper = new Web3Wrapper(web3.currentProvider);
 const erc20Token = web3Wrapper.getContractFromAbi(humanTokenABI);
 
-export interface ERC20TokenContract {
-  balanceOf(address: string): BigNumber;
-}
-
-export async function getContract(
-  address: string
-): Promise<ERC20TokenContract> {
-  const contract = await erc20Token.at(address);
-  return contract;
-}
-
 export async function getBalance(
-  contract: ERC20TokenContract,
+  contractAddress: string,
   address: string
 ): Promise<number> {
-  const balance = await promisify<BigNumber>(contract.balanceOf)(address);
+  const balance = await promisify<BigNumber>(
+    erc20Token.at(contractAddress).balanceOf
+  )(address);
   return balance.toNumber();
 }
 

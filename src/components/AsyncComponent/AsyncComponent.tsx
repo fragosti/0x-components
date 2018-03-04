@@ -11,32 +11,38 @@ interface AsyncComponentProps<T> {
 }
 
 enum PromiseState {
-  None,
   Success,
   Error,
   Loading
 }
 
 interface AsyncComponentState<T> {
-  result: T | Error;
+  result: T;
+  error?: Error;
   promiseState: PromiseState;
 }
 
-const returnArg = <T>(arg: T): T => arg;
+const renderArg = <T extends React.ReactNode>(arg: T): React.ReactNode => (
+  <Container>{arg}</Container>
+);
+const renderError = (error: Error) => <Container>{error.message}</Container>;
 
 class AsyncComponent<T> extends React.Component<
   AsyncComponentProps<T>,
   AsyncComponentState<T>
 > {
   static defaultProps = {
-    renderSuccess: returnArg,
-    renderError: returnArg,
-    renderLoading: returnArg
+    renderError,
+    renderSuccess: renderArg,
+    renderLoading: renderArg
   };
 
   state = {
-    result: null,
-    promiseState: PromiseState.None
+    result: null as any,
+    error: new Error(
+      "This is the default error for AsyncComponent and should not be displayed."
+    ),
+    promiseState: PromiseState.Loading
   };
 
   componentDidMount() {
@@ -55,18 +61,18 @@ class AsyncComponent<T> extends React.Component<
       const result = await this.props.promiseGenerator();
       this.setState({ result, promiseState: PromiseState.Success });
     } catch (error) {
-      this.setState({ result: error, promiseState: PromiseState.Error });
+      this.setState({ error, promiseState: PromiseState.Error });
     }
   }
 
   render() {
     const { renderSuccess, renderError, renderLoading } = this.props;
-    const { result, promiseState } = this.state;
+    const { result, error, promiseState } = this.state;
     switch (promiseState) {
       case PromiseState.Success:
         return renderSuccess(result);
       case PromiseState.Error:
-        return renderError(result);
+        return renderError(error);
       case PromiseState.Loading:
         return renderLoading();
     }

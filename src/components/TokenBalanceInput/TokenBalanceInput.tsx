@@ -1,12 +1,9 @@
 import * as React from "react";
 
-import web3, {
-  getContract,
-  getBalance,
-  ERC20TokenContract
-} from "../../util/web3";
+import web3, { getBalance } from "../../util/web3";
 import { resolver, reverse } from "../../util/web3/ens";
 import TextInput from "../TextInput";
+import AsyncComponent from "../AsyncComponent";
 import Container from "../Container";
 
 interface TokenBalanceInputProps {
@@ -15,13 +12,7 @@ interface TokenBalanceInputProps {
 }
 
 interface TokenBalanceInputState {
-  balance: number;
   address: string;
-  isLoading: boolean;
-  errorMessage: string;
-  tokenContract: ERC20TokenContract;
-  ensCanonicalName: string;
-  ensAddress: string;
 }
 
 class TokenBalanceInput extends React.Component<
@@ -32,93 +23,53 @@ class TokenBalanceInput extends React.Component<
     onChange: () => {}
   };
 
-  constructor(props: TokenBalanceInputProps) {
-    super(props);
-    this.state = {
-      balance: 0,
-      address: "",
-      isLoading: false,
-      tokenContract: null,
-      errorMessage: "",
-      ensCanonicalName: "",
-      ensAddress: ""
-    };
-  }
+  state = {
+    address: ""
+  };
 
-  componentDidMount() {
-    this.updateContract(this.props.takerTokenAddress);
-  }
-
-  componentWillReceiveProps(nextProps: TokenBalanceInputProps) {
-    if (nextProps.takerTokenAddress !== this.props.takerTokenAddress) {
-      // We need to update the contract instance.
-      this.updateContract(nextProps.takerTokenAddress);
+  updateBalance = () => {
+    const { address } = this.state;
+    if (address && !web3.isAddress(address)) {
+      throw new Error("Invalid ETH address");
     }
-  }
+    return getBalance(this.props.takerTokenAddress, address);
+  };
 
-  async updateContract(address: string) {
-    this.setState({ isLoading: true });
-    const tokenContract = await getContract(address);
-    this.setState({ tokenContract, isLoading: false });
-  }
+  updateENSCanonicalName = () => {
+    return reverse(this.state.address);
+  };
 
-  async updateBalance(address: string) {
-    this.setState({ address, isLoading: true, errorMessage: null });
-    const balance = await getBalance(this.state.tokenContract, address);
-    this.setState({ balance, isLoading: false });
-  }
-
-  async updateENSCanonicalName(address: string) {
-    this.setState({ isLoading: true });
-    const ensCanonicalName = await reverse(address);
-    this.setState({ ensCanonicalName, isLoading: false });
-  }
-
-  async updateENSAddress(canonicalName: string) {
-    this.setState({ isLoading: true });
-    const ensAddress = await resolver(canonicalName);
-    this.setState({ ensAddress, isLoading: false });
-  }
+  updateENSAddress = () => {
+    return resolver(this.state.address);
+  };
 
   handleTextChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { onChange } = this.props;
     const address = (e.target as any).value;
     onChange(e);
-
-    if (web3.isAddress(address)) {
-      this.updateBalance(address);
-      this.updateENSCanonicalName(address);
-    } else {
-      this.updateENSAddress(address);
-      this.setState({
-        address,
-        balance: 0,
-        errorMessage: address ? "Not a valid ethereum address" : ""
-      });
-    }
+    this.setState({ address });
   };
 
   render() {
-    const {
-      balance,
-      address,
-      isLoading,
-      errorMessage,
-      ensCanonicalName,
-      ensAddress
-    } = this.state;
+    const { address } = this.state;
+    const { takerTokenAddress } = this.props;
     return (
       <Container>
-        <TextInput isLoading={isLoading} onChange={this.handleTextChange} />
-        {errorMessage ? (
-          <Container marginTop="5px">{errorMessage}</Container>
-        ) : (
-          <Container marginTop="5px">
-            The current balance is: <strong>{balance}</strong>
-          </Container>
-        )}
-        {ensCanonicalName}
-        {ensAddress}
+        <Container marginBottom="5px">
+          <TextInput onChange={this.handleTextChange} />
+        </Container>
+        <AsyncComponent
+          promiseIdentifier={`${takerTokenAddress}${address}`}
+          promiseGenerator={this.updateBalance}
+        />
+        <AsyncComponent
+          promiseIdentifier={address}
+          promiseGenerator={this.updateENSAddress}
+        />
+        <AsyncComponent
+          promiseIdentifier={address}
+          promiseGenerator={this.updateENSCanonicalName}
+        />
       </Container>
     );
   }
