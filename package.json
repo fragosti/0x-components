@@ -39,13 +39,18 @@
     "tslint-config-prettier": "^1.9.0",
     "tslint-react": "^3.5.1",
     "typescript": "^2.7.2",
+    "web3-typescript-typings": "^0.9.11",
     "webpack": "^3.0.0"
   },
   "dependencies": {
+    "@0xproject/types": "^0.2.3",
+    "@0xproject/utils": "^0.3.4",
+    "@0xproject/web3-wrapper": "^0.1.14",
     "@types/react": "^16.0.40",
     "@types/react-dom": "^16.0.4",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
-    "styled-components": "^3.1.6"
+    "styled-components": "^3.1.6",
+    "web3": "^0.20.0"
   }
 }

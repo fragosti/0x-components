@@ -11,6 +11,8 @@ interface ContainerProps {
   position?: string;
   className?: string;
   maxWidth?: string;
+  marginTop?: string;
+  marginBottom?: string;
   children: React.ReactNode;
 }
 
@@ -31,4 +33,6 @@ export default styled(Container)`
   bottom: ${props => props.bottom};
   position: ${props => props.position};
   max-width: ${props => props.maxWidth};
+  margin-top: ${props => props.marginTop};
+  margin-bottom: ${props => props.marginBottom};
 `;

@@ -2,6 +2,7 @@ import * as React from "react";
 
 import Spinner from "../Spinner";
 import Container from "../Container";
+import web3 from "../../util/web3";
 import styled, { Color } from "../../util/style/theme";
 
 interface TextInputProps {
@@ -18,7 +19,7 @@ const TextInput: React.StatelessComponent<TextInputProps> = ({
   onChange,
   isLoading
 }: TextInputProps) => (
-  <Container position="relative" maxWidth="300px">
+  <Container position="relative" maxWidth="450px">
     {isLoading && (
       <Container position="absolute" top="10px" right="0px">
         <Spinner scale={2} />
