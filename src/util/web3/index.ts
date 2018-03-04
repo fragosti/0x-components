@@ -9,6 +9,8 @@ const web3 = new Web3(provider);
 const web3Wrapper = new Web3Wrapper(web3.currentProvider);
 const erc20Token = web3Wrapper.getContractFromAbi(humanTokenABI);
 
+console.log(process.env.NODE_ENV);
+
 export async function getBalance(
   contractAddress: string,
   address: string

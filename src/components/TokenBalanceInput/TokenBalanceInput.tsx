@@ -1,7 +1,5 @@
 import * as React from "react";
 
-import web3, { getBalance } from "../../util/web3";
-import { resolver, reverse } from "../../util/web3/ens";
 import TextInput from "../TextInput";
 import AsyncComponent from "../AsyncComponent";
 import Container from "../Container";
@@ -9,10 +7,10 @@ import Container from "../Container";
 interface TokenBalanceInputProps {
   takerTokenAddress: string;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  isValidAddress?: (address: string) => void;
-  getBalance?: (contractAddress: string, address: string) => Promise<number>;
-  reverseENSLookup?: (address: string) => Promise<string>;
-  resolveENS?: (canonicalName: string) => Promise<string>;
+  isValidAddress: (address: string) => void;
+  getBalance: (contractAddress: string, address: string) => Promise<number>;
+  reverseENSLookup: (address: string) => Promise<string>;
+  resolveENS: (canonicalName: string) => Promise<string>;
 }
 
 interface TokenBalanceInputState {
@@ -25,11 +23,7 @@ class TokenBalanceInput extends React.Component<
   TokenBalanceInputState
 > {
   static defaultProps = {
-    getBalance,
-    onChange: () => {},
-    isValidAddress: web3.isAddress,
-    reverseENSLookup: reverse,
-    resolveENS: resolver
+    onChange: () => {}
   };
 
   state = {
