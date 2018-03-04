@@ -3,7 +3,7 @@ import * as React from "react";
 import Container from "../Container";
 
 interface AsyncComponentProps<T> {
-  promiseIdentifier?: string;
+  promiseIdentifier: string;
   promiseGenerator: () => Promise<T>;
   renderSuccess?: (result: T) => React.ReactNode;
   renderError?: (result: Error) => React.ReactNode;
