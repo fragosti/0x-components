@@ -38,6 +38,10 @@ In terms of things I would've liked to get done:
 - More documentation for TokenBalanceInput. Even for the other components perhaps.
 - Better typing. There are a few `any` types lying around that I would like to address if I had time, but overall I tried my best to not compromise on that. I'm more accustomed to Flow but wow Typescript is amazing! 💫
 - The webpack configuration could be more optimized for publishing to NPM.
+- Some cleanup / refactoring things. 
+  - All the "renderSuccess" methods in `<TokenBalanceInput/>` could be moved to separate functions in a different file, or even separate components.
+  - All the "getPromise" methods in `<TokenBalanceInput/>` could also me moved to higher order functions somewhere else, or implemented with a [recomponse helper](https://github.com/acdlite/recompose/blob/master/docs/API.md#withhandlers).
+- Finally, the `takerTokenAddress` prop is the address of the smart contract, but it would be pretty easy to implement that as the `tokenSymbol` (like ZRX) by using `<AsyncComponent/>` and rendering the current component in the `renderSuccess` method.
 
 ## Implementation Decisions
 For styling I did not use a component library and kept it pretty minimal using styled-components. I like the API and am a fan of CSS-in-JS 😁. Also they have good Typescript declarations. 

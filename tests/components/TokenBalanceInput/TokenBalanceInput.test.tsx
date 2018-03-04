@@ -54,10 +54,10 @@ describe("<TokenBalanceInput />", () => {
     const instance = wrapper.instance() as TokenBalanceInput;
     instance.handleTextChange({ target: { value: "not real" } } as any);
     wrapper.update();
-    expect(instance.updateBalance).toThrowError("Invalid ETH address");
+    expect(instance.getBalance).toThrowError("Invalid ETH address");
     instance.handleTextChange({ target: { value: "real address" } } as any);
     wrapper.update();
-    expect(instance.updateBalance).not.toThrowError();
+    expect(instance.getBalance).not.toThrowError();
   });
 
   it("propagates onChange from input out", () => {

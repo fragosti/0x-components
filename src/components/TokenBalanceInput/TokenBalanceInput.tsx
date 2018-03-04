@@ -35,7 +35,7 @@ class TokenBalanceInput extends React.Component<
     this.setState({ isLoading });
   };
 
-  updateBalance = () => {
+  getBalance = () => {
     const { address } = this.state;
     if (address && !this.props.isValidAddress(address)) {
       throw new Error("Invalid ETH address");
@@ -43,11 +43,11 @@ class TokenBalanceInput extends React.Component<
     return this.props.getBalance(this.props.takerTokenAddress, address);
   };
 
-  updateENSCanonicalName = () => {
+  getENSCanonicalName = () => {
     return this.props.reverseENSLookup(this.state.address);
   };
 
-  updateENSAddress = () => {
+  getENSAddress = () => {
     return this.props.resolveENS(this.state.address);
   };
 
@@ -75,19 +75,19 @@ class TokenBalanceInput extends React.Component<
         </Container>
         <AsyncComponent
           promiseIdentifier={`${takerTokenAddress}${address}`}
-          promiseGenerator={this.updateBalance}
+          promiseGenerator={this.getBalance}
           renderSuccess={this.renderBalance}
           onLoadStatusChange={this.setLoadingState}
         />
         <AsyncComponent
           promiseIdentifier={address}
-          promiseGenerator={this.updateENSAddress}
+          promiseGenerator={this.getENSAddress}
           renderSuccess={this.renderENSAddress}
           onLoadStatusChange={this.setLoadingState}
         />
         <AsyncComponent
           promiseIdentifier={address}
-          promiseGenerator={this.updateENSCanonicalName}
+          promiseGenerator={this.getENSCanonicalName}
           renderSuccess={this.renderENSCanonicalName}
           onLoadStatusChange={this.setLoadingState}
         />
