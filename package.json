@@ -10,7 +10,6 @@
     "build": "dotenv -e .env -- webpack",
     "lint": "tslint -c tslint.json 'src/**/*.{ts,tsx}' --fix",
     "test": "jest --coverage",
-    "test:watch": "jest --coverage --watch",
     "precommit": "lint-staged",
     "prettier": "prettier --parser typescript --write 'src/**/*.{ts,tsx}'"
   },
