@@ -9,6 +9,10 @@ import Container from "../Container";
 interface TokenBalanceInputProps {
   takerTokenAddress: string;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  isValidAddress?: (address: string) => void;
+  getBalance?: (contractAddress: string, address: string) => Promise<number>;
+  reverseENSLookup?: (address: string) => Promise<string>;
+  resolveENS?: (canonicalName: string) => Promise<string>;
 }
 
 interface TokenBalanceInputState {
@@ -21,7 +25,11 @@ class TokenBalanceInput extends React.Component<
   TokenBalanceInputState
 > {
   static defaultProps = {
-    onChange: () => {}
+    getBalance,
+    onChange: () => {},
+    isValidAddress: web3.isAddress,
+    reverseENSLookup: reverse,
+    resolveENS: resolver
   };
 
   state = {
@@ -35,18 +43,18 @@ class TokenBalanceInput extends React.Component<
 
   updateBalance = () => {
     const { address } = this.state;
-    if (address && !web3.isAddress(address)) {
+    if (address && !this.props.isValidAddress(address)) {
       throw new Error("Invalid ETH address");
     }
-    return getBalance(this.props.takerTokenAddress, address);
+    return this.props.getBalance(this.props.takerTokenAddress, address);
   };
 
   updateENSCanonicalName = () => {
-    return reverse(this.state.address);
+    return this.props.reverseENSLookup(this.state.address);
   };
 
   updateENSAddress = () => {
-    return resolver(this.state.address);
+    return this.props.resolveENS(this.state.address);
   };
 
   handleTextChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -56,9 +64,8 @@ class TokenBalanceInput extends React.Component<
     this.setState({ address });
   };
 
-  renderBalance = (balance: number) => (
-    <Container>The balance is {balance}</Container>
-  );
+  renderBalance = (balance: number) =>
+    this.state.address && <Container>The balance is {balance}</Container>;
   renderENSAddress = (address: string) =>
     address && <Container>The ENS address is {address}</Container>;
   renderENSCanonicalName = (name: string) =>
