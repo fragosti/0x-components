@@ -8,6 +8,7 @@ interface AsyncComponentProps<T> {
   renderSuccess?: (result: T) => React.ReactNode;
   renderError?: (result: Error) => React.ReactNode;
   renderLoading?: () => React.ReactNode;
+  onLoadStatusChange?: (isLoading: boolean) => void;
 }
 
 enum PromiseState {
@@ -34,7 +35,8 @@ class AsyncComponent<T> extends React.Component<
   static defaultProps = {
     renderError,
     renderSuccess: renderArg,
-    renderLoading: renderArg
+    renderLoading: renderArg,
+    onLoadStatusChange: () => {}
   };
 
   state = {
@@ -56,12 +58,15 @@ class AsyncComponent<T> extends React.Component<
   }
 
   async updateState() {
+    this.props.onLoadStatusChange(true);
     this.setState({ promiseState: PromiseState.Loading });
     try {
       const result = await this.props.promiseGenerator();
       this.setState({ result, promiseState: PromiseState.Success });
     } catch (error) {
       this.setState({ error, promiseState: PromiseState.Error });
+    } finally {
+      this.props.onLoadStatusChange(false);
     }
   }
 

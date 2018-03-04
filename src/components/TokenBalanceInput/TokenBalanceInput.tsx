@@ -13,6 +13,7 @@ interface TokenBalanceInputProps {
 
 interface TokenBalanceInputState {
   address: string;
+  isLoading: boolean;
 }
 
 class TokenBalanceInput extends React.Component<
@@ -24,7 +25,12 @@ class TokenBalanceInput extends React.Component<
   };
 
   state = {
-    address: ""
+    address: "",
+    isLoading: false
+  };
+
+  setLoadingState = (isLoading: boolean) => {
+    this.setState({ isLoading });
   };
 
   updateBalance = () => {
@@ -50,25 +56,39 @@ class TokenBalanceInput extends React.Component<
     this.setState({ address });
   };
 
+  renderBalance = (balance: number) => (
+    <Container>The balance is {balance}</Container>
+  );
+  renderENSAddress = (address: string) =>
+    address && <Container>The ENS address is {address}</Container>;
+  renderENSCanonicalName = (name: string) =>
+    name && <Container>The ENS canonical name is {name}</Container>;
+
   render() {
-    const { address } = this.state;
+    const { address, isLoading } = this.state;
     const { takerTokenAddress } = this.props;
     return (
       <Container>
         <Container marginBottom="5px">
-          <TextInput onChange={this.handleTextChange} />
+          <TextInput isLoading={isLoading} onChange={this.handleTextChange} />
         </Container>
         <AsyncComponent
           promiseIdentifier={`${takerTokenAddress}${address}`}
           promiseGenerator={this.updateBalance}
+          renderSuccess={this.renderBalance}
+          onLoadStatusChange={this.setLoadingState}
         />
         <AsyncComponent
           promiseIdentifier={address}
           promiseGenerator={this.updateENSAddress}
+          renderSuccess={this.renderENSAddress}
+          onLoadStatusChange={this.setLoadingState}
         />
         <AsyncComponent
           promiseIdentifier={address}
           promiseGenerator={this.updateENSCanonicalName}
+          renderSuccess={this.renderENSCanonicalName}
+          onLoadStatusChange={this.setLoadingState}
         />
       </Container>
     );
