@@ -1,10 +1,11 @@
 import * as React from "react";
 
-import Web3, {
+import web3, {
   getContract,
   getBalance,
   ERC20TokenContract
 } from "../../util/web3";
+import { resolver, reverse } from "../../util/web3/ens";
 import TextInput from "../TextInput";
 import Container from "../Container";
 
@@ -19,6 +20,8 @@ interface TokenBalanceInputState {
   isLoading: boolean;
   errorMessage: string;
   tokenContract: ERC20TokenContract;
+  ensCanonicalName: string;
+  ensAddress: string;
 }
 
 class TokenBalanceInput extends React.Component<
@@ -36,7 +39,9 @@ class TokenBalanceInput extends React.Component<
       address: "",
       isLoading: false,
       tokenContract: null,
-      errorMessage: ""
+      errorMessage: "",
+      ensCanonicalName: "",
+      ensAddress: ""
     };
   }
 
@@ -63,14 +68,28 @@ class TokenBalanceInput extends React.Component<
     this.setState({ balance, isLoading: false });
   }
 
+  async updateENSCanonicalName(address: string) {
+    this.setState({ isLoading: true });
+    const ensCanonicalName = await reverse(address);
+    this.setState({ ensCanonicalName, isLoading: false });
+  }
+
+  async updateENSAddress(canonicalName: string) {
+    this.setState({ isLoading: true });
+    const ensAddress = await resolver(canonicalName);
+    this.setState({ ensAddress, isLoading: false });
+  }
+
   handleTextChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { onChange } = this.props;
     const address = (e.target as any).value;
     onChange(e);
 
-    if (Web3.isAddress(address)) {
+    if (web3.isAddress(address)) {
       this.updateBalance(address);
+      this.updateENSCanonicalName(address);
     } else {
+      this.updateENSAddress(address);
       this.setState({
         address,
         balance: 0,
@@ -80,7 +99,14 @@ class TokenBalanceInput extends React.Component<
   };
 
   render() {
-    const { balance, address, isLoading, errorMessage } = this.state;
+    const {
+      balance,
+      address,
+      isLoading,
+      errorMessage,
+      ensCanonicalName,
+      ensAddress
+    } = this.state;
     return (
       <Container>
         <TextInput isLoading={isLoading} onChange={this.handleTextChange} />
@@ -88,10 +114,11 @@ class TokenBalanceInput extends React.Component<
           <Container marginTop="5px">{errorMessage}</Container>
         ) : (
           <Container marginTop="5px">
-            {" "}
             The current balance is: <strong>{balance}</strong>
           </Container>
         )}
+        {ensCanonicalName}
+        {ensAddress}
       </Container>
     );
   }
