@@ -40,8 +40,11 @@ In terms of things I would've liked to get done:
 - The webpack configuration could be more optimized for publishing to NPM.
 - Some cleanup / refactoring things. 
   - All the "renderSuccess" methods in `<TokenBalanceInput/>` could be moved to separate functions in a different file, or even separate components.
-  - All the "getPromise" methods in `<TokenBalanceInput/>` could also me moved to higher order functions somewhere else, or implemented with a [recomponse helper](https://github.com/acdlite/recompose/blob/master/docs/API.md#withhandlers).
-- Finally, the `takerTokenAddress` prop is the address of the smart contract, but it would be pretty easy to implement that as the `tokenSymbol` (like ZRX) by using `<AsyncComponent/>` and rendering the current component in the `renderSuccess` method.
+  - All the "getPromise" methods in `<TokenBalanceInput/>` could also me moved to higher order functions somewhere else, or implemented with a [recompose helper](https://github.com/acdlite/recompose/blob/master/docs/API.md#withhandlers).
+- The `takerTokenAddress` prop is the address of the smart contract, but it would be pretty easy to implement that as the `tokenSymbol` (like ZRX) by using `<AsyncComponent/>` and rendering the current component in the `renderSuccess` method.
+- Remove the ethereum-ens dependency and simply use the current web3 utils and point to the ENS address.
+- Use [abi-gen](https://github.com/0xProject/0x-monorepo/tree/development/packages/abi-gen) for both the ERC20Token ABI and the ENS ABI.
+- Improve the presentation of the UI (make messages prettier, change the border color of the input on error, etc...).
 
 ## Implementation Decisions
 For styling I did not use a component library and kept it pretty minimal using styled-components. I like the API and am a fan of CSS-in-JS 😁. Also they have good Typescript declarations. 
