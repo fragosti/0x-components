@@ -44,7 +44,7 @@ In terms of things I would've liked to get done:
 - The `takerTokenAddress` prop is the address of the smart contract, but it would be pretty easy to implement that as the `tokenSymbol` (like ZRX) by using `<AsyncComponent/>` and rendering the current component in the `renderSuccess` method.
 - Remove the ethereum-ens dependency and simply use the current web3 utils and point to the ENS address.
 - Use [abi-gen](https://github.com/0xProject/0x-monorepo/tree/development/packages/abi-gen) for both the ERC20Token ABI and the ENS ABI.
-- Improve the presentation of the UI (make messages prettier, change the border color of the input on error, etc...).
+- Improve the presentation of the UI (make messages prettier, convert the token amount to the canonical unit, change the border color of the input on error, etc...).
 
 ## Implementation Decisions
 For styling I did not use a component library and kept it pretty minimal using styled-components. I like the API and am a fan of CSS-in-JS 😁. Also they have good Typescript declarations. 
